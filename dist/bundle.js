@@ -1,2 +1,0 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.rustic=t():e.rustic=t()}(self,(function(){return(()=>{"use strict";return{}})()}));
-//# sourceMappingURL=bundle.js.map

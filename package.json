@@ -12,6 +12,7 @@
 		"prepublishOnly": "rm dist -rf && npm run build",
 		"test": "jest --config jestconfig.json",
 		"test-watch": "jest --watch --config jestconfig.json",
+		"test-clear-cache": "jest --clearCache",
 		"coverage": "jest --coverage --config jestconfig.json"
 	},
 	"keywords": [
@@ -35,5 +36,8 @@
 	},
 	"files": [
 		"dist/**/*"
-	]
+	],
+	"dependencies": {
+		"ts-jest": "^27.0.4"
+	}
 }
