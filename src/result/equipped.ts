@@ -2,6 +2,7 @@ import { todo, panic } from '../helpers';
 import { Ok, Err } from './helpers';
 
 import { Result, ResultKind } from './types';
+import { OptionEquipped } from '../option/equipped';
 
 
 export class ResultEquipped<T, E> {
@@ -39,12 +40,20 @@ export class ResultEquipped<T, E> {
 		}
 	}
 
-	ok(): void {
-		todo('Implement when Option gets there');
+	ok(): OptionEquipped<T> {
+		if (this._res.kind === ResultKind.Ok) {
+			return new OptionEquipped(this._res.data);
+		} else {
+			return new OptionEquipped<T>(null);
+		}
 	}
 
-	err(): void {
-		todo('Implement when Option gets there');
+	err(): OptionEquipped<E> {
+		if (this._res.kind === ResultKind.Err) {
+			return new OptionEquipped(this._res.data);
+		} else {
+			return new OptionEquipped<E>(null);
+		}
 	}
 
 	map<U>(f: (a: T) => U): ResultEquipped<U, E> {

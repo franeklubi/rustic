@@ -1,5 +1,5 @@
 import { Option } from './types';
-import { Result } from '../result/types';
+import { ResultEquipped } from '../result/equipped';
 
 import { panic, todo } from '../helpers';
 import { Ok, Err } from '../result/helpers';
@@ -10,6 +10,10 @@ export class OptionEquipped<T> {
 
 	constructor(opt: Option<T>) {
 		this._opt = opt;
+	}
+
+	get option(): Option<T> {
+		return this._opt;
 	}
 
 	and<U>(optb: Option<U>): OptionEquipped<U> {
@@ -106,19 +110,19 @@ export class OptionEquipped<T> {
 		}
 	}
 
-	okOr<E>(err: E): Result<T, E> {
+	okOr<E>(err: E): ResultEquipped<T, E> {
 		if (this._opt == null) {
-			return Err(err);
+			return new ResultEquipped<T, E>(Err(err));
 		} else {
-			return Ok(this._opt);
+			return new ResultEquipped<T, E>(Ok(this._opt));
 		}
 	}
 
-	okOrElse<E>(f: () => E): Result<T, E> {
+	okOrElse<E>(f: () => E): ResultEquipped<T, E> {
 		if (this._opt == null) {
-			return Err(f());
+			return new ResultEquipped<T, E>(Err(f()));
 		} else {
-			return Ok(this._opt);
+			return new ResultEquipped<T, E>(Ok(this._opt));
 		}
 	}
 
@@ -154,7 +158,7 @@ export class OptionEquipped<T> {
 		return new OptionEquipped(oldValue);
 	}
 
-	transpose<E>(): Result<Option<T>, E> {
+	transpose<E>(): ResultEquipped<Option<T>, E> {
 		return todo('transpose');
 	}
 
