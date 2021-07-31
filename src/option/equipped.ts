@@ -158,7 +158,7 @@ export class OptionEquipped<T> {
 		return new OptionEquipped(oldValue);
 	}
 
-	transpose<E>(): ResultEquipped<Option<T>, E> {
+	transpose<E>(): ResultEquipped<OptionEquipped<T>, E> {
 		return todo('transpose');
 	}
 

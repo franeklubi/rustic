@@ -1,5 +1,5 @@
-import { todo, panic } from '../helpers';
 import { Ok, Err } from './helpers';
+import { todo, panic } from '../helpers';
 
 import { Result, ResultKind } from './types';
 import { OptionEquipped } from '../option/equipped';
@@ -176,11 +176,21 @@ export class ResultEquipped<T, E> {
 		}
 	}
 
-	transpose(): void {
-		todo('When option gets there');
+	transpose(): OptionEquipped<ResultEquipped<T, E>> {
+		if (this._res.kind === ResultKind.Ok) {
+			if (this._res.data == null) {
+				return new OptionEquipped<ResultEquipped<T, E>>(null);
+			} else {
+				return new OptionEquipped(
+					new ResultEquipped(Ok(this._res.data)),
+				);
+			}
+		} else {
+			return new OptionEquipped(new ResultEquipped(Err(this._res.data)))
+		}
 	}
 
-	flatten(): Result<T, E> {
+	flatten(): ResultEquipped<T, E> {
 		return todo('idk later');
 	}
 }
