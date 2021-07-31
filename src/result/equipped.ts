@@ -16,6 +16,14 @@ export class ResultEquipped<T, E> {
 		return this._res;
 	}
 
+	get kind(): ResultKind {
+		return this._res.kind;
+	}
+
+	get data(): T | E {
+		return this._res.data;
+	}
+
 	isOk(): boolean {
 		return this._res.kind === ResultKind.Ok;
 	}

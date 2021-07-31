@@ -1,5 +1,6 @@
 import { Option } from './types';
 import { ResultEquipped } from '../result/equipped';
+import { Result, ResultKind, ResultErr } from '../result/types';
 
 import { panic, todo } from '../helpers';
 import { Ok, Err } from '../result/helpers';
@@ -159,7 +160,19 @@ export class OptionEquipped<T> {
 	}
 
 	transpose<E>(): ResultEquipped<OptionEquipped<T>, E> {
-		return todo('transpose');
+		const value = this._opt as Option<Result<T, E> | ResultEquipped<T, E>>;
+
+		if (value == null) {
+			return new ResultEquipped(Ok(new OptionEquipped<T>(null)));
+		} else {
+			if (value.kind === ResultKind.Ok) {
+				return new ResultEquipped(
+					Ok(new OptionEquipped<T>(value.data as T)),
+				);
+			} else {
+				return new ResultEquipped(Err(value.data as E));
+			}
+		}
 	}
 
 	unwrap(): T {
