@@ -1,6 +1,7 @@
 import { Result } from './result/types';
 import { ResultEquipped } from './result/equipped';
 
+
 // TODO: use map in whole file when option is implemented
 
 export function unimplemented(msg?: string): any {

@@ -1,4 +1,4 @@
-import { Result, ResultKind } from './result';
+import { Result, ResultKind } from './types';
 
 
 describe('result type', () => {

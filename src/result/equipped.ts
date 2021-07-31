@@ -7,8 +7,8 @@ import { Result, ResultKind } from './types';
 export class ResultEquipped<T, E> {
 	private _res: Result<T, E>;
 
-	constructor(r: Result<T, E>) {
-		this._res = r;
+	constructor(res: Result<T, E>) {
+		this._res = res;
 	}
 
 	get result(): Result<T, E> {
@@ -169,5 +169,9 @@ export class ResultEquipped<T, E> {
 
 	transpose(): void {
 		todo('When option gets there');
+	}
+
+	flatten(): Result<T, E> {
+		return todo('idk later');
 	}
 }
