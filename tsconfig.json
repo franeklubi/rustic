@@ -1,0 +1,31 @@
+{
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"allowJs": true,
+		"checkJs": true,
+		"noImplicitAny": true,
+		"composite": true,
+		"declarationMap": true,
+		"baseUrl": ".",
+		"target": "es5",
+		"module": "commonjs",
+		"strict": true,
+		"strictNullChecks": true,
+		"moduleResolution": "node",
+		"declaration": true,
+		"lib": ["es5"],
+		"outDir": "./dist",
+		"paths": {
+			"src/*": ["./src/*"]
+		}
+	},
+	"include": [
+		"src/**/*"
+	],
+	"exclude": ["node_modules", "dist", "**/*.spec.ts"],
+	"watchOptions": {
+		"watchFile": "useFsEvents",
+		"watchDirectory": "useFsEvents",
+		"fallbackPolling": "dynamicPriority"
+	}
+}
