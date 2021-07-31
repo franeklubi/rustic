@@ -2,5 +2,6 @@
 // Helpers
 export * from './helpers';
 
-// Types
-export * from './types/result';
+// Result
+export * from './result/types';
+export * from './result/helpers';

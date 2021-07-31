@@ -2,7 +2,7 @@
 export enum ResultKind {
 	Ok,
 	Err,
-};
+}
 
 export interface ResultOk<T> {
 	kind: ResultKind.Ok;
