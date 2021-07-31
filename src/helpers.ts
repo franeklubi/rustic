@@ -1,5 +1,7 @@
 import { Result } from './result/types';
+import { Option } from './option/types';
 import { ResultEquipped } from './result/equipped';
+import { OptionEquipped } from './option/equipped';
 
 
 // TODO: use map in whole file when option is implemented
@@ -18,11 +20,11 @@ export function panic(msg?: string): any {
 
 // TODO: implement `equip` for Option
 export function equip<T, E>(r: Result<T, E>): ResultEquipped<T, E>;
-export function equip<O>(r: O): { inner: O };
+export function equip<T>(r: Option<T>): OptionEquipped<T>;
 export function equip(v: any) {
 	if (v.kind != null) {
 		return new ResultEquipped(v);
 	} else {
-		return todo('Option');
+		return new OptionEquipped(v);
 	}
 }
