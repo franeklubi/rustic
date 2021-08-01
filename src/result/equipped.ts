@@ -2,6 +2,7 @@ import { Ok, Err } from './helpers';
 import { todo, panic } from '../helpers';
 
 import { Result, ResultKind } from './types';
+import { Option, Inner } from '../option/types';
 import { OptionEquipped } from '../option/equipped';
 
 import { None } from '../option/consts';
@@ -62,13 +63,13 @@ export class ResultEquipped<T, E> {
 		if (this._res.kind === ResultKind.Err) {
 			return new OptionEquipped(this._res.data);
 		} else {
-			return new OptionEquipped<E>(null);
+			return new OptionEquipped<E>(None);
 		}
 	}
 
 	map<U>(f: (a: T) => U): ResultEquipped<U, E> {
 		if (this._res.kind === ResultKind.Ok) {
-			return new ResultEquipped(Ok(f(this._res.data)));
+			return new ResultEquipped<U, E>(Ok(f(this._res.data)));
 		} else {
 			return this as unknown as ResultEquipped<U, E>;
 		}
@@ -76,13 +77,13 @@ export class ResultEquipped<T, E> {
 
 	mapErr<F>(f: (a: E) => F): ResultEquipped<T, F> {
 		if (this._res.kind === ResultKind.Err) {
-			return new ResultEquipped(Err(f(this._res.data)));
+			return new ResultEquipped<T, F>(Err(f(this._res.data)));
 		} else {
 			return this as unknown as ResultEquipped<T, F>;
 		}
 	}
 
-	mapOr<U>(f: (a: T) => U, d: U): U {
+	mapOr<U>(d: U, f: (a: T) => U): U {
 		if (this._res.kind === ResultKind.Ok) {
 			return f(this._res.data);
 		} else {
@@ -90,7 +91,7 @@ export class ResultEquipped<T, E> {
 		}
 	}
 
-	mapOrElse<U>(mf: (a: T) => U, df: () => U): U {
+	mapOrElse<U>(df: () => U, mf: (a: T) => U): U {
 		if (this._res.kind === ResultKind.Ok) {
 			return mf(this._res.data);
 		} else {
@@ -98,19 +99,19 @@ export class ResultEquipped<T, E> {
 		}
 	}
 
-	and(res: Result<T, E>): ResultEquipped<T, E> {
+	and<U>(res: Result<U, E>): ResultEquipped<U, E> {
 		if (this._res.kind === ResultKind.Ok) {
 			return new ResultEquipped(res);
 		} else {
-			return this;
+			return this as unknown as ResultEquipped<U, E>;
 		}
 	}
 
-	andThen(f: (a: T) => Result<T, E>): ResultEquipped<T, E> {
+	andThen<U>(f: (a: T) => Result<U, E>): ResultEquipped<U, E> {
 		if (this._res.kind === ResultKind.Ok) {
 			return new ResultEquipped(f(this._res.data));
 		} else {
-			return this;
+			return this as unknown as ResultEquipped<U, E>;
 		}
 	}
 
@@ -186,26 +187,28 @@ export class ResultEquipped<T, E> {
 		}
 	}
 
-	transpose(): OptionEquipped<ResultEquipped<T, E>> {
+	transpose<I extends Inner<T>>(): OptionEquipped<ResultEquipped<I, E>> {
 		if (this._res.kind === ResultKind.Ok) {
-			if (this._res.data == null) {
-				return new OptionEquipped<ResultEquipped<T, E>>(null);
+			if (this._res.data == None) {
+				return new OptionEquipped<ResultEquipped<I, E>>(None);
 			} else {
-				return new OptionEquipped(
-					new ResultEquipped(Ok(this._res.data)),
+				return new OptionEquipped<ResultEquipped<I, E>>(
+					new ResultEquipped(Ok(this._res.data as I)),
 				);
 			}
 		} else {
-			return new OptionEquipped(new ResultEquipped(Err(this._res.data)))
+			return new OptionEquipped(
+				new ResultEquipped<I, E>(Err(this._res.data)),
+			);
 		}
 	}
 
 	flatten(): ResultEquipped<T, E> {
-		// Assuming that data held is of result-ish type
+		// Assuming that data held is of result-ish type...
 		const value: Result<T, E> = this._res.data as unknown as Result<T, E>;
 
-		// But making sure it really is
-		if (value.kind == null) {
+		// ...but making sure it really is
+		if (value.kind == None) {
 			return this;
 		}
 

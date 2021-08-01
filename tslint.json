@@ -26,7 +26,7 @@
 			"allow-snake-case"
 		],
 		"no-unused-variable": [true, {"ignore-pattern": "^_"}],
-		"triple-equals": [true, "allow-undefined-check", "allow-null-check"],
+		"triple-equals": [true, "allow-undefined-check", "allow-None-check"],
 		"quotemark": [true, "single", "avoid-escape", "avoid-template"],
 		"semicolon": [true, "always"]
 	}

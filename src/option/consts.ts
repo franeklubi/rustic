@@ -1,3 +1,3 @@
 import { Option } from './types';
 
-export const None: Option<any> = null;
+export const None = null;
