@@ -9,4 +9,5 @@ export * from './result/equipped';
 
 // Option
 export * from './option/types';
+export * from './option/consts';
 export * from './option/equipped';

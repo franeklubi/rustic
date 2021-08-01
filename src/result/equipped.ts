@@ -4,6 +4,8 @@ import { todo, panic } from '../helpers';
 import { Result, ResultKind } from './types';
 import { OptionEquipped } from '../option/equipped';
 
+import { None } from '../option/consts';
+
 
 export class ResultEquipped<T, E> {
 	private _res: Result<T, E>;
@@ -52,7 +54,7 @@ export class ResultEquipped<T, E> {
 		if (this._res.kind === ResultKind.Ok) {
 			return new OptionEquipped(this._res.data);
 		} else {
-			return new OptionEquipped<T>(null);
+			return new OptionEquipped<T>(None);
 		}
 	}
 

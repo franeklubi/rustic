@@ -19,7 +19,7 @@ export function panic(msg?: string): any {
 export function equip<T, E>(r: Result<T, E>): ResultEquipped<T, E>;
 export function equip<T>(r: Option<T>): OptionEquipped<T>;
 export function equip(v: any) {
-	if (v.kind != null) {
+	if (v?.kind != null) {
 		return new ResultEquipped(v);
 	} else {
 		return new OptionEquipped(v);
