@@ -1,4 +1,3 @@
-import { ResultEquipped } from './equipped';
 import { Result, ResultKind } from './types';
 
 

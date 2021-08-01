@@ -1,8 +1,8 @@
 import { Ok, Err } from './helpers';
-import { todo, panic } from '../helpers';
+import { panic } from '../helpers';
 
+import { Inner } from '../option/types';
 import { Result, ResultKind } from './types';
-import { Option, Inner } from '../option/types';
 import { OptionEquipped } from '../option/equipped';
 
 import { None } from '../option/consts';
@@ -138,7 +138,7 @@ export class ResultEquipped<T, E> {
 			return panic(
 				`called ResultEquipped.unwrap() on an \`Err\` value ${
 					JSON.stringify(this._res.data)
-				}`
+				}`,
 			);
 		}
 	}
@@ -150,7 +150,7 @@ export class ResultEquipped<T, E> {
 			return panic(
 				`called ResultEquipped.unwrapErr() on an \`Ok\` value: ${
 					JSON.stringify(this._res.data)
-				}`
+				}`,
 			);
 		}
 	}
@@ -189,7 +189,7 @@ export class ResultEquipped<T, E> {
 
 	transpose<I extends Inner<T>>(): OptionEquipped<ResultEquipped<I, E>> {
 		if (this._res.kind === ResultKind.Ok) {
-			if (this._res.data == None) {
+			if (this._res.data == null) {
 				return new OptionEquipped<ResultEquipped<I, E>>(None);
 			} else {
 				return new OptionEquipped<ResultEquipped<I, E>>(
@@ -208,7 +208,7 @@ export class ResultEquipped<T, E> {
 		const value: Result<T, E> = this._res.data as unknown as Result<T, E>;
 
 		// ...but making sure it really is
-		if (value.kind == None) {
+		if (value.kind == null) {
 			return this;
 		}
 
