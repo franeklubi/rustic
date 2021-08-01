@@ -123,7 +123,7 @@ const res2 = catchResult(doesNotThrowError);	// Ok(5)
 
 ## parseJson
 ```ts
-import { parseJson } from 'rustic';
+import { parseJson, Result } from 'rustic';
 
 const parsed1: Result<number, string> = parseJson('5');	// Ok(5)
 
