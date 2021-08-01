@@ -1,9 +1,9 @@
 {
 	"name": "rustic",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "A package providing Rust types and helpers for Typescript",
 	"main": "dist/bundle.js",
-	"types": "dist/bundle.d.ts",
+	"types": "dist/src/index.d.ts",
 	"scripts": {
 		"watch": "webpack -w --mode development --progress -c webpack.config.dev.js",
 		"build": "webpack --mode production --progress -c webpack.config.prod.js",
