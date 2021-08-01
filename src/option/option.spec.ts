@@ -250,6 +250,11 @@ describe('Option<T>', () => {
 		const y4: ResultEquipped<OptionEquipped<number>, SomeErr>
 			= equip(Err(1234));
 		expect(x4.transpose()).toEqual(y4);
+
+		const x5: OptionEquipped<Result<number, SomeErr>> = equip(None);
+		const y5: ResultEquipped<OptionEquipped<number>, SomeErr>
+			= equip(Ok(equip(None)));
+		expect(x5.transpose()).toEqual(y5);
 	});
 
 	test('unwrap method', () => {
