@@ -199,6 +199,17 @@ export class ResultEquipped<T, E> {
 	}
 
 	flatten(): ResultEquipped<T, E> {
-		return todo('idk later');
+		// Assuming that data held is of result-ish type
+		const value: Result<T, E> = this._res.data as unknown as Result<T, E>;
+
+		// But making sure it really is
+		if (value.kind == null) {
+			return this;
+		}
+
+		return new ResultEquipped({
+			kind: value.kind,
+			data: value.data,
+		} as Result<T, E>);
 	}
 }

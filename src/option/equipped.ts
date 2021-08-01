@@ -55,10 +55,6 @@ export class OptionEquipped<T> {
 		}
 	}
 
-	flatten(): OptionEquipped<T> {
-		return todo('later');
-	}
-
 	getOrInsert(value: T): T {
 		if (this._opt == null) {
 			return this._opt = value;
