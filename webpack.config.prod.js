@@ -25,10 +25,12 @@ module.exports = {
 		},
 	},
 	output: {
-		filename: 'bundle.js',
-		path: path.resolve(__dirname, 'dist'),
 		library: 'rustic',
 		libraryTarget: 'umd',
+		globalObject: 'this',
+
+		filename: 'bundle.js',
+		path: path.resolve(__dirname, 'dist'),
 	},
 	optimization: {
 		minimize: true,
