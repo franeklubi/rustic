@@ -1,6 +1,6 @@
 {
 	"name": "rustic",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "A package providing Rust types and helpers for Typescript",
 	"main": "dist/bundle.js",
 	"types": "dist/src/index.d.ts",

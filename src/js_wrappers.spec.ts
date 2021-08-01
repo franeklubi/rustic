@@ -1,9 +1,27 @@
 import { Result, ResultKind } from './result/types';
 
-import { parseJson } from './js_wrappers';
+import { Ok, Err } from './result/helpers';
+import { parseJson, catchResult } from './js_wrappers';
 
 
 describe('js wrappers', () => {
+	test('catchResult', () => {
+		function throwsError(): void {
+			throw new Error('1234');
+		}
+
+		expect(throwsError).toThrowError();
+
+		function doesNotThrowError(): number {
+			return 5;
+		}
+
+		expect(doesNotThrowError).not.toThrowError();
+
+		expect(catchResult(throwsError)).toEqual(Err('Error: 1234'));
+		expect(catchResult(doesNotThrowError)).toEqual(Ok(5));
+	});
+
 	test('parseJson', () => {
 		const j1: string = '{';
 		const res1: Result<number, string> = parseJson(j1);

@@ -7,6 +7,9 @@
 * [Usage](#usage)
 	* [Result](#result)
 	* [Option](#option)
+* [Wrappers](#wrappers)
+	* [catchResult](#catchResult)
+	* [parseJson](#parsejson)
 ---
 
 # Installation
@@ -28,6 +31,7 @@ import { Result, Err, Ok, ResultKind } from 'rustic';
 function fallible(): Result<number, string> {
 	const zeroToTen: number = Math.random() * 10;
 
+	// Using Err and Ok helper as a shorthand to produce Result
 	if (zeroToTen < 5) {
 		return Err("Lower than 5");
 	} else {
@@ -101,4 +105,27 @@ const squared = res.map(n => n * n);
 // Unwrap can lead to panics. You can still access the underlying Option<number>
 // by using .option: `squared.option`
 console.log('Sqared num:', squared.unwrap());
+```
+
+# Wrappers
+
+## catchResult
+```ts
+import { catchResult } from 'rustic';
+
+function throwsError(): void { throw new Error('1234') }
+
+function doesNotThrowError(): number { return 5 }
+
+const res1 = catchResult(throwsError);	// Err('Error: 1234')
+const res2 = catchResult(doesNotThrowError);	// Ok(5)
+```
+
+## parseJson
+```ts
+import { parseJson } from 'rustic';
+
+const parsed1: Result<number, string> = parseJson('5');	// Ok(5)
+
+const parsed2: Result<number, string> = parseJson('{');	// Err('...')
 ```
