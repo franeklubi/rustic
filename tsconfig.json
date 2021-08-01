@@ -13,7 +13,7 @@
 		"strictNullChecks": true,
 		"moduleResolution": "node",
 		"declaration": true,
-		"lib": ["es5"],
+		"lib": ["es5", "dom"],
 		"outDir": "./dist",
 		"paths": {
 			"src/*": ["./src/*"]
