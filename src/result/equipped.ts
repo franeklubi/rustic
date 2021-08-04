@@ -19,8 +19,8 @@ export class ResultEquipped<T, E> {
 		return this._res;
 	}
 
-	get kind(): ResultKind {
-		return this._res.kind;
+	get __kind(): ResultKind {
+		return this._res.__kind;
 	}
 
 	get data(): T | E {
@@ -28,15 +28,15 @@ export class ResultEquipped<T, E> {
 	}
 
 	isOk(): boolean {
-		return this._res.kind === ResultKind.Ok;
+		return this._res.__kind === ResultKind.Ok;
 	}
 
 	isErr(): boolean {
-		return this._res.kind === ResultKind.Err;
+		return this._res.__kind === ResultKind.Err;
 	}
 
 	contains(value: T): boolean {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return this._res.data === value;
 		} else {
 			return false;
@@ -44,7 +44,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	containsErr(value: E): boolean {
-		if (this._res.kind === ResultKind.Err) {
+		if (this._res.__kind === ResultKind.Err) {
 			return this._res.data === value;
 		} else {
 			return false;
@@ -52,7 +52,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	ok(): OptionEquipped<T> {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return new OptionEquipped(this._res.data);
 		} else {
 			return new OptionEquipped<T>(None);
@@ -60,7 +60,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	err(): OptionEquipped<E> {
-		if (this._res.kind === ResultKind.Err) {
+		if (this._res.__kind === ResultKind.Err) {
 			return new OptionEquipped(this._res.data);
 		} else {
 			return new OptionEquipped<E>(None);
@@ -68,7 +68,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	map<U>(f: (a: T) => U): ResultEquipped<U, E> {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return new ResultEquipped<U, E>(Ok(f(this._res.data)));
 		} else {
 			return this as unknown as ResultEquipped<U, E>;
@@ -76,7 +76,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	mapErr<F>(f: (a: E) => F): ResultEquipped<T, F> {
-		if (this._res.kind === ResultKind.Err) {
+		if (this._res.__kind === ResultKind.Err) {
 			return new ResultEquipped<T, F>(Err(f(this._res.data)));
 		} else {
 			return this as unknown as ResultEquipped<T, F>;
@@ -84,7 +84,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	mapOr<U>(d: U, f: (a: T) => U): U {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return f(this._res.data);
 		} else {
 			return d;
@@ -92,7 +92,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	mapOrElse<U>(df: () => U, mf: (a: T) => U): U {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return mf(this._res.data);
 		} else {
 			return df();
@@ -100,7 +100,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	and<U>(res: Result<U, E>): ResultEquipped<U, E> {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return new ResultEquipped(res);
 		} else {
 			return this as unknown as ResultEquipped<U, E>;
@@ -108,7 +108,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	andThen<U>(f: (a: T) => Result<U, E>): ResultEquipped<U, E> {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return new ResultEquipped(f(this._res.data));
 		} else {
 			return this as unknown as ResultEquipped<U, E>;
@@ -116,7 +116,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	or<F>(res: Result<T, F>): ResultEquipped<T, F> {
-		if (this._res.kind === ResultKind.Err) {
+		if (this._res.__kind === ResultKind.Err) {
 			return new ResultEquipped<T, F>(res);
 		} else {
 			return this as unknown as ResultEquipped<T, F>;
@@ -124,7 +124,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	orElse<F>(f: (a: E) => Result<T, F>): ResultEquipped<T, F> {
-		if (this._res.kind === ResultKind.Err) {
+		if (this._res.__kind === ResultKind.Err) {
 			return new ResultEquipped(f(this._res.data));
 		} else {
 			return this as unknown as ResultEquipped<T, F>;
@@ -132,7 +132,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	unwrap(): T {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return this._res.data;
 		} else {
 			return panic(
@@ -144,7 +144,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	unwrapErr(): E {
-		if (this._res.kind === ResultKind.Err) {
+		if (this._res.__kind === ResultKind.Err) {
 			return this._res.data;
 		} else {
 			return panic(
@@ -156,7 +156,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	unwrapOr(d: T): T {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return this._res.data;
 		} else {
 			return d;
@@ -164,7 +164,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	unwrapOrElse(f: () => T): T {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return this._res.data;
 		} else {
 			return f();
@@ -172,7 +172,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	expect(msg: string): T {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			return this._res.data;
 		} else {
 			return panic(`${msg}: ${JSON.stringify(this._res.data)}`);
@@ -180,7 +180,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	expectErr(msg: string): E {
-		if (this._res.kind === ResultKind.Err) {
+		if (this._res.__kind === ResultKind.Err) {
 			return this._res.data;
 		} else {
 			return panic(`${msg}: ${JSON.stringify(this._res.data)}`);
@@ -188,7 +188,7 @@ export class ResultEquipped<T, E> {
 	}
 
 	transpose<I extends Inner<T>>(): OptionEquipped<ResultEquipped<I, E>> {
-		if (this._res.kind === ResultKind.Ok) {
+		if (this._res.__kind === ResultKind.Ok) {
 			if (this._res.data == null) {
 				return new OptionEquipped<ResultEquipped<I, E>>(None);
 			} else {
@@ -208,12 +208,12 @@ export class ResultEquipped<T, E> {
 		const value: Result<T, E> = this._res.data as unknown as Result<T, E>;
 
 		// ...but making sure it really is
-		if (value.kind == null) {
+		if (value.__kind == null) {
 			return this;
 		}
 
 		return new ResultEquipped({
-			kind: value.kind,
+			__kind: value.__kind,
 			data: value.data,
 		} as Result<T, E>);
 	}

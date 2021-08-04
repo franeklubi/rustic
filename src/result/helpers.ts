@@ -3,14 +3,14 @@ import { Result, ResultKind } from './types';
 
 export function Ok<T, E>(data: T): Result<T, E> {
 	return {
-		kind: ResultKind.Ok,
+		__kind: ResultKind.Ok,
 		data,
 	};
 }
 
 export function Err<T, E>(data: E): Result<T, E> {
 	return {
-		kind: ResultKind.Err,
+		__kind: ResultKind.Err,
 		data,
 	};
 }

@@ -165,7 +165,7 @@ export class OptionEquipped<T> {
 				Ok(new OptionEquipped<T>(None)),
 			);
 		} else {
-			if (value.kind === ResultKind.Ok) {
+			if (value.__kind === ResultKind.Ok) {
 				return new ResultEquipped<OptionEquipped<T>, E>(
 					Ok(new OptionEquipped<T>(value.data as T)),
 				);

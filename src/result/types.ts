@@ -5,12 +5,12 @@ export enum ResultKind {
 }
 
 export interface ResultOk<T> {
-	kind: ResultKind.Ok;
+	__kind: ResultKind.Ok;
 	data: T;
 }
 
 export interface ResultErr<E> {
-	kind: ResultKind.Err;
+	__kind: ResultKind.Err;
 	data: E;
 }
 
