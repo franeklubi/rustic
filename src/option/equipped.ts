@@ -15,7 +15,7 @@ export class OptionEquipped<T> {
 		this._opt = opt;
 	}
 
-	get option(): Option<T> {
+	get inner(): Option<T> {
 		return this._opt;
 	}
 

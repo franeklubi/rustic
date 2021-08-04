@@ -15,7 +15,7 @@ export class ResultEquipped<T, E> {
 		this._res = res;
 	}
 
-	get result(): Result<T, E> {
+	get inner(): Result<T, E> {
 		return this._res;
 	}
 

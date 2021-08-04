@@ -54,18 +54,18 @@ describe('result type', () => {
 
 	test('ok method', () => {
 		const x1: ResultEquipped<number, string> = equip(Ok(2));
-		expect(x1.ok().option).toEqual(2);
+		expect(x1.ok().inner).toEqual(2);
 
 		const x2: ResultEquipped<number, string> = equip(Err('Nothing here'));
-		expect(x2.ok().option).toEqual(None);
+		expect(x2.ok().inner).toEqual(None);
 	});
 
 	test('err method', () => {
 		const x1: ResultEquipped<number, string> = equip(Ok(2));
-		expect(x1.err().option).toEqual(None);
+		expect(x1.err().inner).toEqual(None);
 
 		const x2: ResultEquipped<number, string> = equip(Err('Nothing here'));
-		expect(x2.err().option).toEqual('Nothing here');
+		expect(x2.err().inner).toEqual('Nothing here');
 	});
 
 	test('map method', () => {
@@ -75,11 +75,11 @@ describe('result type', () => {
 
 		const from1: Result<number, string> = Ok(4);
 		const target1: Result<string, string> = Ok('4');
-		expect(equip(from1).map(stringize).result).toEqual(target1);
+		expect(equip(from1).map(stringize).inner).toEqual(target1);
 
 		const from2: Result<number, string> = Err('Test');
 		const target2: Result<string, string> = Err('Test');
-		expect(equip(from2).map(stringize).result).toEqual(target2);
+		expect(equip(from2).map(stringize).inner).toEqual(target2);
 	});
 
 	test('mapErr method', () => {
@@ -89,11 +89,11 @@ describe('result type', () => {
 
 		const from1: Result<string, string> = Ok('Test');
 		const target1: Result<string, number> = Ok('Test');
-		expect(equip(from1).mapErr(numberize).result).toEqual(target1);
+		expect(equip(from1).mapErr(numberize).inner).toEqual(target1);
 
 		const from2: Result<string, string> = Err('4');
 		const target2: Result<string, number> = Err(4);
-		expect(equip(from2).mapErr(numberize).result).toEqual(target2);
+		expect(equip(from2).mapErr(numberize).inner).toEqual(target2);
 	});
 
 	test('mapOr method', () => {
@@ -115,74 +115,74 @@ describe('result type', () => {
 	test('and method', () => {
 		const x1: Result<number, string> = Ok(2);
 		const y1: Result<string, string> = Err('late error');
-		expect(equip(x1).and(y1).result).toEqual(Err('late error'));
+		expect(equip(x1).and(y1).inner).toEqual(Err('late error'));
 
 		const x2: Result<number, string> = Err('early error');
 		const y2: Result<string, string> = Ok('foo');
-		expect(equip(x2).and(y2).result).toEqual(Err('early error'));
+		expect(equip(x2).and(y2).inner).toEqual(Err('early error'));
 
 		const x3: Result<number, string> = Err('not a 2');
 		const y3: Result<string, string> = Err('late error');
-		expect(equip(x3).and(y3).result).toEqual(Err('not a 2'));
+		expect(equip(x3).and(y3).inner).toEqual(Err('not a 2'));
 
 		const x4: Result<number, string> = Ok(2);
 		const y4: Result<string, string> = Ok('different result type');
-		expect(equip(x4).and(y4).result).toEqual(Ok('different result type'));
+		expect(equip(x4).and(y4).inner).toEqual(Ok('different result type'));
 	});
 
 	test('andThen method', () => {
 		const x1: Result<number, string> = Ok(2);
 		const y1: Result<string, string> = Err('late error');
-		expect(equip(x1).andThen(() => y1).result).toEqual(Err('late error'));
+		expect(equip(x1).andThen(() => y1).inner).toEqual(Err('late error'));
 
 		const x2: Result<number, string> = Err('early error');
 		const y2: Result<string, string> = Ok('foo');
-		expect(equip(x2).andThen(() => y2).result).toEqual(Err('early error'));
+		expect(equip(x2).andThen(() => y2).inner).toEqual(Err('early error'));
 
 		const x3: Result<number, string> = Err('not a 2');
 		const y3: Result<string, string> = Err('late error');
-		expect(equip(x3).andThen(() => y3).result).toEqual(Err('not a 2'));
+		expect(equip(x3).andThen(() => y3).inner).toEqual(Err('not a 2'));
 
 		const x4: Result<number, string> = Ok(2);
 		const y4: Result<string, string> = Ok('different result type');
-		expect(equip(x4).andThen(() => y4).result)
+		expect(equip(x4).andThen(() => y4).inner)
 			.toEqual(Ok('different result type'));
 	});
 
 	test('or method', () => {
 		const x1: Result<number, string> = Ok(2);
 		const y1: Result<number, string> = Err('late error');
-		expect(equip(x1).or(y1).result).toEqual(Ok(2));
+		expect(equip(x1).or(y1).inner).toEqual(Ok(2));
 
 		const x2: Result<number, string> = Err('early error');
 		const y2: Result<number, string> = Ok(2);
-		expect(equip(x2).or(y2).result).toEqual(Ok(2));
+		expect(equip(x2).or(y2).inner).toEqual(Ok(2));
 
 		const x3: Result<number, string> = Err('not a 2');
 		const y3: Result<number, string> = Err('late error');
-		expect(equip(x3).or(y3).result).toEqual(Err('late error'));
+		expect(equip(x3).or(y3).inner).toEqual(Err('late error'));
 
 		const x4: Result<number, string> = Ok(2);
 		const y4: Result<number, string> = Ok(100);
-		expect(equip(x4).or(y4).result).toEqual(Ok(2));
+		expect(equip(x4).or(y4).inner).toEqual(Ok(2));
 	});
 
 	test('orElse method', () => {
 		const x1: Result<number, string> = Ok(2);
 		const y1: Result<number, string> = Err('late error');
-		expect(equip(x1).orElse(() => y1).result).toEqual(Ok(2));
+		expect(equip(x1).orElse(() => y1).inner).toEqual(Ok(2));
 
 		const x2: Result<number, string> = Err('early error');
 		const y2: Result<number, string> = Ok(2);
-		expect(equip(x2).orElse(() => y2).result).toEqual(Ok(2));
+		expect(equip(x2).orElse(() => y2).inner).toEqual(Ok(2));
 
 		const x3: Result<number, string> = Err('not a 2');
 		const y3: Result<number, string> = Err('late error');
-		expect(equip(x3).orElse(() => y3).result).toEqual(Err('late error'));
+		expect(equip(x3).orElse(() => y3).inner).toEqual(Err('late error'));
 
 		const x4: Result<number, string> = Ok(2);
 		const y4: Result<number, string> = Ok(100);
-		expect(equip(x4).orElse(() => y4).result).toEqual(Ok(2));
+		expect(equip(x4).orElse(() => y4).inner).toEqual(Ok(2));
 	});
 
 	test('unwrap method', () => {
@@ -264,24 +264,24 @@ describe('result type', () => {
 
 	test('flatten method', () => {
 		let x1: Result<string, number> = Ok("hello");
-		expect(equip(x1).flatten().result).toEqual(Ok("hello"));
+		expect(equip(x1).flatten().inner).toEqual(Ok("hello"));
 
 		let x2: Result<Result<string, number>, number> = Ok(Ok("hello"));
-		expect(equip(x2).flatten().result).toEqual(Ok("hello"));
+		expect(equip(x2).flatten().inner).toEqual(Ok("hello"));
 
 		let x3: Result<ResultEquipped<string, number>, number>
 			= Ok(equip(Ok("hello")));
-		expect(equip(x3).flatten().result).toEqual(Ok("hello"));
+		expect(equip(x3).flatten().inner).toEqual(Ok("hello"));
 
 		let x4: Result<Result<string, number>, number> = Ok(Err(6));
-		expect(equip(x4).flatten().result).toEqual(Err(6));
+		expect(equip(x4).flatten().inner).toEqual(Err(6));
 
 		let x5: Result<Result<string, number>, number> = Err(6);
-		expect(equip(x5).flatten().result).toEqual(Err(6));
+		expect(equip(x5).flatten().inner).toEqual(Err(6));
 
 		let x6: Result<Result<Result<string, number>, number>, number>
 			= Ok(Ok(Ok("hello")));
-		expect(equip(x6).flatten().result).toEqual(Ok(Ok("hello")));
-		expect(equip(x6).flatten().flatten().result).toEqual(Ok("hello"));
+		expect(equip(x6).flatten().inner).toEqual(Ok(Ok("hello")));
+		expect(equip(x6).flatten().flatten().inner).toEqual(Ok("hello"));
 	});
 });
