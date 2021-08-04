@@ -8,6 +8,10 @@ import { Ok, Err } from '../result/helpers';
 import { None } from './consts';
 
 
+/**
+ * Wrapper for Option<T> containing all methods (that make sense)
+ * from Rust's Option<T>
+ */
 export class OptionEquipped<T> {
 	private _opt: Option<T>;
 

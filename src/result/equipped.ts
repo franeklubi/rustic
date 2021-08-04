@@ -7,7 +7,10 @@ import { OptionEquipped } from '../option/equipped';
 
 import { None } from '../option/consts';
 
-
+/**
+ * Wrapper for Result<T, E> containing all methods (that make sense)
+ * from Rust's Result<T, E>
+ */
 export class ResultEquipped<T, E> {
 	private _res: Result<T, E>;
 
