@@ -10,7 +10,7 @@ import { Result } from './result/types';
 import { OptionEquipped } from './option/equipped';
 import { ResultEquipped } from './result/equipped';
 
-import { Ok, Err } from './result/helpers';
+import { Ok, Err, isOk, isErr } from './result/helpers';
 
 import { None } from './option/consts';
 
@@ -54,5 +54,23 @@ describe('equip helper', () => {
 
 		const x2: Result<number, SomeErr> = Err(1234);
 		expect(equip(x2)).toEqual(new ResultEquipped<number, SomeErr>(x2))
+	});
+});
+
+describe('isOk and isErr helpers', () => {
+	test('isOk', () => {
+		const okRes: Result<number, string> = Ok(1234);
+		const errRes: Result<number, string> = Err('1234');
+
+		expect(isOk(okRes)).toEqual(true);
+		expect(isOk(errRes)).toEqual(false);
+	});
+
+	test('isErr', () => {
+		const okRes: Result<number, string> = Ok(1234);
+		const errRes: Result<number, string> = Err('1234');
+
+		expect(isErr(okRes)).toEqual(false);
+		expect(isErr(errRes)).toEqual(true);
 	});
 });
