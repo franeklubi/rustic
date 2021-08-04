@@ -237,30 +237,35 @@ describe('Option<T>', () => {
 	test('transpose method', () => {
 		type SomeErr = 1234;
 
+		// Some OptionEquipped of Ok ResultEquipped
 		const x1: OptionEquipped<ResultEquipped<number, SomeErr>>
 			= new OptionEquipped(equip(Ok(5)));
 		const y1: ResultEquipped<OptionEquipped<number>, SomeErr>
 			= equip(Ok(equip(5)));
 		expect(x1.transpose()).toEqual(y1);
 
+		// Some OptionEquipped of Err ResultEquipped
 		const x2: OptionEquipped<ResultEquipped<number, SomeErr>>
 			= new OptionEquipped(equip(Err(1234)));
 		const y2: ResultEquipped<OptionEquipped<number>, SomeErr>
 			= equip(Err(1234));
 		expect(x2.transpose()).toEqual(y2);
 
+		// Some OptionEquipped of Ok Result
 		const x3: OptionEquipped<Result<number, SomeErr>>
 			= new OptionEquipped(Ok(5));
 		const y3: ResultEquipped<OptionEquipped<number>, SomeErr>
 			= equip(Ok(equip(5)));
 		expect(x3.transpose()).toEqual(y3);
 
+		// Some OptionEquipped of Err Result
 		const x4: OptionEquipped<Result<number, SomeErr>>
 			= new OptionEquipped(Err(1234));
 		const y4: ResultEquipped<OptionEquipped<number>, SomeErr>
 			= equip(Err(1234));
 		expect(x4.transpose()).toEqual(y4);
 
+		// None OptionEquipped
 		const x5: OptionEquipped<Result<number, SomeErr>>
 			= equip(None as Option<Result<number, SomeErr>>);
 		const y5: ResultEquipped<OptionEquipped<number>, SomeErr>
