@@ -23,10 +23,10 @@ $ npm i rustic
 
 ## Result
 
-1. Let's suppose we you have a fallible function that'll return an error for random number lower than 5:
+1. Let's suppose we You have a fallible function that'll return an error for random number lower than 5:
 
 ```ts
-import { Result, Err, Ok, ResultKind } from 'rustic';
+import { Result, Err, Ok, isOk } from 'rustic';
 
 function fallible(): Result<number, string> {
 	const zeroToTen: number = Math.random() * 10;
@@ -41,7 +41,9 @@ function fallible(): Result<number, string> {
 
 const res = fallible();
 
-if (res.kind === ResultKind.Ok) {
+// Using isOk helper will do this for You, but You can also
+// access the `__kind` field and compare it with `ResultKind` enum directly
+if (isOk(res)) {
 	// Typescript infers res.data's type as `number`
 	console.log('Successful num sq:', res.data * res.data);	// Successful num sq: <number>
 } else {
@@ -49,7 +51,7 @@ if (res.kind === ResultKind.Ok) {
 }
 ```
 
-2. Suppose you want to map the Result of a fallible function:
+2. Suppose You want to map the Result of a fallible function:
 
 ```ts
 import { Result, equip, ResultEquipped } from 'rustic';
@@ -61,13 +63,13 @@ const res: Result<number, string> = fallible();
 // Call `equip` with the Result of fallible function
 const equipped: ResultEquipped<number, string> = equip(res);
 
-// Use as you would Rust's Result
+// Use as You would Rust's Result
 const squared: number = equipped.map(n => n * n).expect('Squared n');
 
 // Using unwrap can cause a panic: `panicked at 'Squared n: "<err message>"'`
 
-// You can access the underlying Result<number, string> using the `.result` getter:
-// `equipped.result`;
+// You can access the underlying Result<number, string> using the `.inner` getter:
+// `equipped.inner`;
 
 console.log('Squared', squared);
 ```
@@ -103,7 +105,7 @@ const res: OptionEquipped<number> = equip(returnsOption());
 const squared = res.map(n => n * n);
 
 // Unwrap can lead to panics. You can still access the underlying Option<number>
-// by using .option: `squared.option`
+// by using `.inner`: `squared.inner`
 console.log('Sqared num:', squared.unwrap());
 ```
 
