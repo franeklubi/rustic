@@ -16,10 +16,14 @@ export function panic(msg?: string): any {
 	throw new Error(`panicked at '${msg == null ? 'explicit panic' : msg}'`);
 }
 
+/**
+ * Turns Result<T, E> into ResultEquipped<T, E>
+ * and Option<T> into OptionEquipped<T>
+ */
 export function equip<T, E>(r: Result<T, E>): ResultEquipped<T, E>;
 export function equip<T>(r: Option<T>): OptionEquipped<T>;
 export function equip(v: any) {
-	if (v?.kind != null) {
+	if ((v as Result<any, any>)?.__kind != null) {
 		return new ResultEquipped(v);
 	} else {
 		return new OptionEquipped(v);

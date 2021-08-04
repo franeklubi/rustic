@@ -8,6 +8,10 @@ import { Ok, Err } from '../result/helpers';
 import { None } from './consts';
 
 
+/**
+ * Wrapper for Option<T> containing all methods (that make sense)
+ * from Rust's Option<T>
+ */
 export class OptionEquipped<T> {
 	private _opt: Option<T>;
 
@@ -15,7 +19,7 @@ export class OptionEquipped<T> {
 		this._opt = opt;
 	}
 
-	get option(): Option<T> {
+	get inner(): Option<T> {
 		return this._opt;
 	}
 
@@ -165,7 +169,7 @@ export class OptionEquipped<T> {
 				Ok(new OptionEquipped<T>(None)),
 			);
 		} else {
-			if (value.kind === ResultKind.Ok) {
+			if (value.__kind === ResultKind.Ok) {
 				return new ResultEquipped<OptionEquipped<T>, E>(
 					Ok(new OptionEquipped<T>(value.data as T)),
 				);

@@ -13,22 +13,22 @@ describe('Option<T>', () => {
 	test('and method', () => {
 		const x1: Option<number> = 2;
 		const y1: Option<string> = None;
-		const res1: Option<string> = equip(x1).and(y1).option;
+		const res1: Option<string> = equip(x1).and(y1).inner;
 		expect(res1).toEqual(None);
 
 		const x2: Option<number> = None;
 		const y2: Option<string> = "foo";
-		const res2: Option<string> = equip(x2).and(y2).option;
+		const res2: Option<string> = equip(x2).and(y2).inner;
 		expect(res2).toEqual(None);
 
 		const x3 = 2;
 		const y3 = "foo";
-		const res3: Option<string> = equip(x3).and(y3).option;
+		const res3: Option<string> = equip(x3).and(y3).inner;
 		expect(res3).toEqual("foo");
 
 		const x4: Option<number> = None;
 		const y4: Option<string> = None;
-		const res4: Option<string> = equip(x4).and(y4).option;
+		const res4: Option<string> = equip(x4).and(y4).inner;
 		expect(res4).toEqual(None);
 	});
 
@@ -36,14 +36,14 @@ describe('Option<T>', () => {
 		function sq(x: number): Option<number> { return x * x };
 		function nope(_: number): Option<number> { return None };
 
-		expect(equip(2).andThen(sq).andThen(sq).option).toEqual(16);
-		expect(equip(2).andThen(sq).andThen(nope).option).toEqual(None);
-		expect(equip(2).andThen(nope).andThen(sq).option).toEqual(None);
+		expect(equip(2).andThen(sq).andThen(sq).inner).toEqual(16);
+		expect(equip(2).andThen(sq).andThen(nope).inner).toEqual(None);
+		expect(equip(2).andThen(nope).andThen(sq).inner).toEqual(None);
 		expect(
 			equip(None as Option<number>)
 				.andThen(sq)
 				.andThen(sq)
-				.option,
+				.inner,
 		).toEqual(None);
 	});
 
@@ -72,10 +72,10 @@ describe('Option<T>', () => {
 		expect(
 			equip(None as Option<number>)
 				.filter(isEven)
-				.option,
+				.inner,
 		).toEqual(None);
-		expect(equip(3).filter(isEven).option).toEqual(None);
-		expect(equip(4).filter(isEven).option).toEqual(4);
+		expect(equip(3).filter(isEven).inner).toEqual(None);
+		expect(equip(4).filter(isEven).inner).toEqual(4);
 	})
 
 	test('getOrInsert method', () => {
@@ -128,139 +128,144 @@ describe('Option<T>', () => {
 	test('map method', () => {
 		const maybeSomeString1: OptionEquipped<string> = equip('hello, world!');
 		const maybeSomeLen1: Option<number>
-			= maybeSomeString1.map((s) => s.length).option;
+			= maybeSomeString1.map((s) => s.length).inner;
 
 		expect(maybeSomeLen1).toEqual(13);
 
 		const maybeSomeString2: OptionEquipped<string>
 			= equip(None as Option<string>);
 		const maybeSomeLen2: Option<number>
-			= maybeSomeString2.map((s) => s.length).option;
+			= maybeSomeString2.map((s) => s.length).inner;
 
 		expect(maybeSomeLen2).toEqual(None);
 	});
 
 	test('mapOr method', () => {
 		const x1: OptionEquipped<string> = equip("foo");
-		expect(x1.mapOr(42, (v) => v.length).option).toEqual(3);
+		expect(x1.mapOr(42, (v) => v.length).inner).toEqual(3);
 
 		const x2: OptionEquipped<string> = equip(None as Option<string>);
-		expect(x2.mapOr(42, (v) => v.length).option).toEqual(42);
+		expect(x2.mapOr(42, (v) => v.length).inner).toEqual(42);
 	});
 
 	test('mapOrElse method', () => {
 		const k = 21;
 
 		const x1: OptionEquipped<string> = equip("foo");
-		expect(x1.mapOrElse(() => 2 * k, (v) => v.length).option).toEqual(3);
+		expect(x1.mapOrElse(() => 2 * k, (v) => v.length).inner).toEqual(3);
 
 		const x2: OptionEquipped<string> = equip(None as Option<string>);
-		expect(x2.mapOrElse(() => 2 * k, (v) => v.length).option).toEqual(42);
+		expect(x2.mapOrElse(() => 2 * k, (v) => v.length).inner).toEqual(42);
 	});
 
 	test('okOr method', () => {
 		const x1: OptionEquipped<string> = equip("foo");
-		expect(x1.okOr(0).result).toEqual(Ok("foo"));
+		expect(x1.okOr(0).inner).toEqual(Ok("foo"));
 
 		const x2: OptionEquipped<string> = equip(None as Option<string>);
-		expect(x2.okOr(0).result).toEqual(Err(0));
+		expect(x2.okOr(0).inner).toEqual(Err(0));
 	});
 
 	test('okOrElse method', () => {
 		const x1: OptionEquipped<string> = equip("foo");
-		expect(x1.okOrElse(() => 0).result).toEqual(Ok("foo"));
+		expect(x1.okOrElse(() => 0).inner).toEqual(Ok("foo"));
 
 		const x2: OptionEquipped<string> = equip(None as Option<string>);
-		expect(x2.okOrElse(() => 0).result).toEqual(Err(0));
+		expect(x2.okOrElse(() => 0).inner).toEqual(Err(0));
 	});
 
 	test('or method', () => {
 		const x1 = equip(2);
 		const y1 = None;
-		expect(x1.or(y1).option).toEqual(2);
+		expect(x1.or(y1).inner).toEqual(2);
 
 		const x2 = equip(None as Option<number>);
 		const y2 = 100;
-		expect(x2.or(y2).option).toEqual(100);
+		expect(x2.or(y2).inner).toEqual(100);
 
 		const x3 = equip(2);
 		const y3 = 100;
-		expect(x3.or(y3).option).toEqual(2);
+		expect(x3.or(y3).inner).toEqual(2);
 
 		const x4: OptionEquipped<number> = equip(None as Option<number>);
 		const y4 = None;
-		expect(x4.or(y4).option).toEqual(None);
+		expect(x4.or(y4).inner).toEqual(None);
 	});
 
 	test('orElse method', () => {
 		const x1 = equip(2);
 		const y1 = None;
-		expect(x1.orElse(() => y1).option).toEqual(2);
+		expect(x1.orElse(() => y1).inner).toEqual(2);
 
 		const x2 = equip(None as Option<number>);
 		const y2 = 100;
-		expect(x2.orElse(() => y2).option).toEqual(100);
+		expect(x2.orElse(() => y2).inner).toEqual(100);
 
 		const x3 = equip(2);
 		const y3 = 100;
-		expect(x3.orElse(() => y3).option).toEqual(2);
+		expect(x3.orElse(() => y3).inner).toEqual(2);
 
 		const x4: OptionEquipped<number> = equip(None as Option<number>);
 		const y4 = None;
-		expect(x4.orElse(() => y4).option).toEqual(None);
+		expect(x4.orElse(() => y4).inner).toEqual(None);
 	});
 
 	test('replace method', () => {
 		const x1 = equip(2);
 		const old1 = x1.replace(5);
-		expect(x1.option).toEqual(5);
-		expect(old1.option).toEqual(2);
+		expect(x1.inner).toEqual(5);
+		expect(old1.inner).toEqual(2);
 
 		const x2 = equip(None as Option<number>);
 		const old2 = x2.replace(3);
-		expect(x2.option).toEqual(3);
-		expect(old2.option).toEqual(None);
+		expect(x2.inner).toEqual(3);
+		expect(old2.inner).toEqual(None);
 	});
 
 	test('take method', () => {
 		const x1: OptionEquipped<number> = equip(2);
 		const y1 = x1.take();
-		expect(x1.option).toEqual(None);
-		expect(y1.option).toEqual(2);
+		expect(x1.inner).toEqual(None);
+		expect(y1.inner).toEqual(2);
 
 		const x2: OptionEquipped<number> = equip(None as Option<number>);
 		const y2 = x2.take();
-		expect(x2.option).toEqual(None);
-		expect(y2.option).toEqual(None);
+		expect(x2.inner).toEqual(None);
+		expect(y2.inner).toEqual(None);
 	});
 
 	test('transpose method', () => {
 		type SomeErr = 1234;
 
+		// Some OptionEquipped of Ok ResultEquipped
 		const x1: OptionEquipped<ResultEquipped<number, SomeErr>>
 			= new OptionEquipped(equip(Ok(5)));
 		const y1: ResultEquipped<OptionEquipped<number>, SomeErr>
 			= equip(Ok(equip(5)));
 		expect(x1.transpose()).toEqual(y1);
 
+		// Some OptionEquipped of Err ResultEquipped
 		const x2: OptionEquipped<ResultEquipped<number, SomeErr>>
 			= new OptionEquipped(equip(Err(1234)));
 		const y2: ResultEquipped<OptionEquipped<number>, SomeErr>
 			= equip(Err(1234));
 		expect(x2.transpose()).toEqual(y2);
 
+		// Some OptionEquipped of Ok Result
 		const x3: OptionEquipped<Result<number, SomeErr>>
 			= new OptionEquipped(Ok(5));
 		const y3: ResultEquipped<OptionEquipped<number>, SomeErr>
 			= equip(Ok(equip(5)));
 		expect(x3.transpose()).toEqual(y3);
 
+		// Some OptionEquipped of Err Result
 		const x4: OptionEquipped<Result<number, SomeErr>>
 			= new OptionEquipped(Err(1234));
 		const y4: ResultEquipped<OptionEquipped<number>, SomeErr>
 			= equip(Err(1234));
 		expect(x4.transpose()).toEqual(y4);
 
+		// None OptionEquipped
 		const x5: OptionEquipped<Result<number, SomeErr>>
 			= equip(None as Option<Result<number, SomeErr>>);
 		const y5: ResultEquipped<OptionEquipped<number>, SomeErr>
@@ -291,19 +296,19 @@ describe('Option<T>', () => {
 	test('xor method', () => {
 		const x1: OptionEquipped<number> = equip(2);
 		const y1: Option<number> = None;
-		expect(x1.xor(y1).option).toEqual(2);
+		expect(x1.xor(y1).inner).toEqual(2);
 
 		const x2: OptionEquipped<number> = equip(None as Option<number>);
 		const y2 = 2;
-		expect(x2.xor(y2).option).toEqual(2);
+		expect(x2.xor(y2).inner).toEqual(2);
 
 		const x3: OptionEquipped<number> = equip(2);
 		const y3 = 2;
-		expect(x3.xor(y3).option).toEqual(None);
+		expect(x3.xor(y3).inner).toEqual(None);
 
 		const x4: OptionEquipped<number> = equip(None as Option<number>);
 		const y4: Option<number> = None;
-		expect(x4.xor(y4).option).toEqual(None);
+		expect(x4.xor(y4).inner).toEqual(None);
 	});
 
 	test('zip method', () => {
@@ -311,8 +316,8 @@ describe('Option<T>', () => {
 		const y: Option<string> = "hi";
 		const z: Option<number> = None;
 
-		expect(x.zip(y).option).toEqual([1, "hi"]);
-		expect(x.zip(z).option).toEqual(None);
+		expect(x.zip(y).inner).toEqual([1, "hi"]);
+		expect(x.zip(z).inner).toEqual(None);
 	});
 
 	test('zipWith method', () => {
@@ -333,7 +338,7 @@ describe('Option<T>', () => {
 
 		const targetPoint: Point = newPoint(17.5, 42.7);
 
-		expect(x.zipWith(y, newPoint).option).toEqual(targetPoint);
-		expect(x.zipWith(None, newPoint).option).toEqual(None);
+		expect(x.zipWith(y, newPoint).inner).toEqual(targetPoint);
+		expect(x.zipWith(None, newPoint).inner).toEqual(None);
 	});
 });
