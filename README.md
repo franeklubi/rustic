@@ -2,6 +2,8 @@
 
 `rustic` is a TypeScript library providing emulation of `Rust`'s `Option` and `Result` types (and some useful wrappers for common js functions as well!).
 
+The repo has 100% test code coverage, so You can be sure it will never fail! Even more in Your production code™. (The not fail part is obviously a lie. Test Your code.)
+
 ---
 * [Installation](#installation)
 * [Usage](#usage)
