@@ -2,7 +2,7 @@
 
 `rustic` is a TypeScript library providing emulation of `Rust`'s `Option` and `Result` types (and some useful wrappers for common js functions as well!).
 
-The repo has 100% test code coverage, so You can be sure it will never fail! Even more in Your production code™. (The not fail part is obviously a lie. Test Your code.)
+The repo has 100% test code coverage, so you can be sure it will never fail! Even more in your production code™. (The not fail part is obviously a lie. Test your code.)
 
 ---
 * [Installation](#installation)
@@ -25,7 +25,7 @@ $ npm i rustic
 
 ## Result
 
-1. Let's suppose we You have a fallible function that'll return an error for random number lower than 5:
+1. Let's suppose we you have a fallible function that'll return an error for random number lower than 5:
 
 ```ts
 import { Result, Err, Ok, isOk } from 'rustic';
@@ -53,7 +53,7 @@ if (isOk(res)) {
 }
 ```
 
-2. Suppose You want to map the Result of a fallible function:
+2. Suppose you want to map the Result of a fallible function:
 
 ```ts
 import { Result, equip, ResultEquipped } from 'rustic';
