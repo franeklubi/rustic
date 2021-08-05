@@ -9,39 +9,32 @@ import { SafeResponse, SafeFetchError } from './types';
 export async function safeFetch(
 	input: RequestInfo,
 	init?: RequestInit,
-): Promise<Result<SafeResponse, SafeFetchError>> {
+): Promise<Result<SafeResponse, string>> {
 	// Catching async error
-	let response: Response;
-	try {
-		response = await fetch(input, init);
-	} catch(e) {
-		return Err({
-			response: null,
-			message: String(e),
-		});
-	}
+	const caught = await catchAsyncResult(() => fetch(input, init));
 
-	const safetied: SafeResponse = {
-		// Copies
-		body: response.body,
-		bodyUsed: response.bodyUsed,
-		headers: response.headers,
-		ok: response.ok,
-		redirected: response.redirected,
-		status: response.status,
-		statusText: response.statusText,
-		type: response.type,
-		url: response.url,
-		clone: response.clone,
+	// Mapping the result from Response into SafeResponse
+	return equip(caught).map((res: Response) => {
+		return {
+			// Copies
+			body: res.body,
+			bodyUsed: res.bodyUsed,
+			headers: res.headers,
+			ok: res.ok,
+			redirected: res.redirected,
+			status: res.status,
+			statusText: res.statusText,
+			type: res.type,
+			url: res.url,
+			clone: res.clone,
 
-		// Safetied
-		trailer: catchAsyncResult(() => response.trailer),
-		arrayBuffer: () => catchAsyncResult(response.arrayBuffer),
-		blob: () => catchAsyncResult(response.blob),
-		formData: () => catchAsyncResult(response.formData),
-		json: () => catchAsyncResult(response.json),
-		text: () => catchAsyncResult(response.text),
-	};
-
-	return Ok(safetied);
+			// Safetied
+			trailer: catchAsyncResult(() => res.trailer),
+			arrayBuffer: () => catchAsyncResult(res.arrayBuffer),
+			blob: () => catchAsyncResult(res.blob),
+			formData: () => catchAsyncResult(res.formData),
+			json: () => catchAsyncResult(res.json),
+			text: () => catchAsyncResult(res.text),
+		};
+	}).inner;
 }

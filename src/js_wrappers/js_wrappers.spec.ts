@@ -1,3 +1,4 @@
+import { SafeResponse } from './types';
 import { Result, ResultKind } from '../result/types';
 
 import { Ok, Err } from '../result/helpers';
@@ -58,7 +59,9 @@ describe('js wrappers > parse_json', () => {
 });
 
 describe('js wrappers > fetch', () => {
-	it('should return an error on invalid url call', () => {
-		const fetched = safeFetch('asdf');
+	it('should return an error on invalid url call', async () => {
+		const fetched: Result<SafeResponse, string> = await safeFetch('asdf');
+
+		expect(fetched).toEqual(Err('chuj'));
 	});
 });
