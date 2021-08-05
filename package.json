@@ -10,7 +10,7 @@
 		"lint": "tslint -p tsconfig.json",
 		"doc": "typedoc src",
 		"prepublishOnly": "rm dist -rf && npm run lint && npm run test && npm run build",
-		"test": "jest --config jestconfig.json",
+		"test": "npm run coverage",
 		"test-watch": "jest --watch --config jestconfig.json",
 		"test-clear-cache": "jest --clearCache",
 		"coverage": "jest --coverage --config jestconfig.json"
