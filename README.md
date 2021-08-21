@@ -43,7 +43,7 @@ function fallible(): Result<number, string> {
 
 const res = fallible();
 
-// Using isOk helper will do this for You, but You can also
+// Using isOk helper will do this for you, but you can also
 // access the `__kind` field and compare it with `ResultKind` enum directly
 if (isOk(res)) {
 	// Typescript infers res.data's type as `number`
@@ -65,7 +65,7 @@ const res: Result<number, string> = fallible();
 // Call `equip` with the Result of fallible function
 const equipped: ResultEquipped<number, string> = equip(res);
 
-// Use as You would Rust's Result
+// Use as you would Rust's Result
 const squared: number = equipped.map(n => n * n).expect('Squared n');
 
 // Using unwrap can cause a panic: `panicked at 'Squared n: "<err message>"'`
