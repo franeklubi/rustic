@@ -1,10 +1,12 @@
 import { equip } from '../helpers';
+import { Ok, Err, isErr } from '../result/helpers';
+import { parseJson } from '../js_wrappers/js_wrappers';
 
 import { Option } from './types';
-import { Result } from '../result/types';
-import { Ok, Err } from '../result/helpers';
 import { OptionEquipped } from './equipped';
+import { RawJson } from '../js_wrappers/types';
 import { ResultEquipped } from '../result/equipped';
+import { Result, ResultKind } from '../result/types';
 
 import { None } from './consts';
 
@@ -240,37 +242,49 @@ describe('Option<T>', () => {
 		// Some OptionEquipped of Ok ResultEquipped
 		const x1: OptionEquipped<ResultEquipped<number, SomeErr>>
 			= new OptionEquipped(equip(Ok(5)));
-		const y1: ResultEquipped<OptionEquipped<number>, SomeErr>
-			= equip(Ok(equip(5)));
+		const y1: ResultEquipped<Option<number>, SomeErr>
+			= equip(Ok(5));
 		expect(x1.transpose()).toEqual(y1);
 
 		// Some OptionEquipped of Err ResultEquipped
 		const x2: OptionEquipped<ResultEquipped<number, SomeErr>>
 			= new OptionEquipped(equip(Err(1234)));
-		const y2: ResultEquipped<OptionEquipped<number>, SomeErr>
+		const y2: ResultEquipped<Option<number>, SomeErr>
 			= equip(Err(1234));
 		expect(x2.transpose()).toEqual(y2);
 
 		// Some OptionEquipped of Ok Result
 		const x3: OptionEquipped<Result<number, SomeErr>>
 			= new OptionEquipped(Ok(5));
-		const y3: ResultEquipped<OptionEquipped<number>, SomeErr>
-			= equip(Ok(equip(5)));
+		const y3: ResultEquipped<Option<number>, SomeErr>
+			= equip(Ok(5));
 		expect(x3.transpose()).toEqual(y3);
 
 		// Some OptionEquipped of Err Result
 		const x4: OptionEquipped<Result<number, SomeErr>>
 			= new OptionEquipped(Err(1234));
-		const y4: ResultEquipped<OptionEquipped<number>, SomeErr>
+		const y4: ResultEquipped<Option<number>, SomeErr>
 			= equip(Err(1234));
 		expect(x4.transpose()).toEqual(y4);
 
 		// None OptionEquipped
 		const x5: OptionEquipped<Result<number, SomeErr>>
 			= equip(None as Option<Result<number, SomeErr>>);
-		const y5: ResultEquipped<OptionEquipped<number>, SomeErr>
-			= equip(Ok(equip(None as Option<number>)));
+		const y5: ResultEquipped<Option<number>, SomeErr>
+			= equip(Ok(None));
 		expect(x5.transpose()).toEqual(y5);
+
+		const json1: Option<RawJson<number>> = '}' as Option<RawJson<number>>;
+		const parsed1 = equip(json1)
+			.map(parseJson)
+			.transpose();
+		expect(parsed1.__kind).toEqual(ResultKind.Err);
+
+		const json2: Option<RawJson<number>> = '5' as Option<RawJson<number>>;
+		const parsed2 = equip(json2)
+			.map(parseJson)
+			.transpose();
+		expect(parsed2.__kind).toEqual(ResultKind.Ok);
 	});
 
 	test('unwrap method', () => {

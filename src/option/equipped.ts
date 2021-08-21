@@ -24,7 +24,7 @@ export class OptionEquipped<T> {
 	}
 
 	and<U>(optb: Option<U>): OptionEquipped<U> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return this as unknown as OptionEquipped<U>;
 		} else {
 			return new OptionEquipped<U>(optb);
@@ -32,7 +32,7 @@ export class OptionEquipped<T> {
 	}
 
 	andThen<U>(f: (a: T) => Option<U>): OptionEquipped<U> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return this as unknown as OptionEquipped<U>;
 		} else {
 			return new OptionEquipped<U>(f(this._opt));
@@ -44,7 +44,7 @@ export class OptionEquipped<T> {
 	}
 
 	expect(msg: string): T {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return panic(`${msg}`);
 		} else {
 			return this._opt;
@@ -52,7 +52,7 @@ export class OptionEquipped<T> {
 	}
 
 	filter(f: (a: T) => boolean): OptionEquipped<T> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return this;
 		} else if (f(this._opt)) {
 			return this;
@@ -62,7 +62,7 @@ export class OptionEquipped<T> {
 	}
 
 	getOrInsert(value: T): T {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return this._opt = value;
 		} else {
 			return this._opt;
@@ -70,7 +70,7 @@ export class OptionEquipped<T> {
 	}
 
 	getOrInsertWith(f: () => T): T {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return this._opt = f();
 		} else {
 			return this._opt;
@@ -82,7 +82,7 @@ export class OptionEquipped<T> {
 	}
 
 	isNone(): boolean {
-		return this._opt == null;
+		return this._opt == None;
 	}
 
 	isSome(): boolean {
@@ -90,7 +90,7 @@ export class OptionEquipped<T> {
 	}
 
 	map<U>(f: (a: T) => Option<U>): OptionEquipped<U> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return this as unknown as OptionEquipped<U>;
 		} else {
 			return new OptionEquipped(f(this._opt));
@@ -98,7 +98,7 @@ export class OptionEquipped<T> {
 	}
 
 	mapOr<U>(d: U, f: (a: T) => Option<U>): OptionEquipped<U> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return new OptionEquipped(d);
 		} else {
 			return new OptionEquipped(f(this._opt));
@@ -106,7 +106,7 @@ export class OptionEquipped<T> {
 	}
 
 	mapOrElse<U>(df: () => U, mf: (a: T) => Option<U>): OptionEquipped<U> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return new OptionEquipped(df());
 		} else {
 			return new OptionEquipped(mf(this._opt));
@@ -114,7 +114,7 @@ export class OptionEquipped<T> {
 	}
 
 	okOr<E>(err: E): ResultEquipped<T, E> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return new ResultEquipped<T, E>(Err(err));
 		} else {
 			return new ResultEquipped<T, E>(Ok(this._opt));
@@ -122,7 +122,7 @@ export class OptionEquipped<T> {
 	}
 
 	okOrElse<E>(f: () => E): ResultEquipped<T, E> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return new ResultEquipped<T, E>(Err(f()));
 		} else {
 			return new ResultEquipped<T, E>(Ok(this._opt));
@@ -130,7 +130,7 @@ export class OptionEquipped<T> {
 	}
 
 	or(optb: Option<T>): OptionEquipped<T> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return new OptionEquipped(optb);
 		} else {
 			return this;
@@ -138,7 +138,7 @@ export class OptionEquipped<T> {
 	}
 
 	orElse(f: () => Option<T>): OptionEquipped<T> {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return new OptionEquipped(f());
 		} else {
 			return this;
@@ -161,20 +161,20 @@ export class OptionEquipped<T> {
 		return new OptionEquipped(oldValue);
 	}
 
-	transpose<E>(): ResultEquipped<OptionEquipped<T>, E> {
+	transpose<E>(): ResultEquipped<Option<T>, E> {
 		const value = this._opt as Option<Result<T, E> | ResultEquipped<T, E>>;
 
-		if (value == null) {
-			return new ResultEquipped<OptionEquipped<T>, E>(
-				Ok(new OptionEquipped<T>(None)),
+		if (value == None) {
+			return new ResultEquipped<Option<T>, E>(
+				Ok(value),
 			);
 		} else {
 			if (value.__kind === ResultKind.Ok) {
-				return new ResultEquipped<OptionEquipped<T>, E>(
-					Ok(new OptionEquipped<T>(value.data as T)),
+				return new ResultEquipped<Option<T>, E>(
+					Ok(value.data as T),
 				);
 			} else {
-				return new ResultEquipped<OptionEquipped<T>, E>(
+				return new ResultEquipped<Option<T>, E>(
 					Err(value.data as E),
 				);
 			}
@@ -182,7 +182,7 @@ export class OptionEquipped<T> {
 	}
 
 	unwrap(): T {
-		if (this._opt == null) {
+		if (this._opt == None) {
 			return panic('called OptionEquipped.unwrap() on a `None` value');
 		} else {
 			return this._opt;
@@ -198,9 +198,9 @@ export class OptionEquipped<T> {
 	}
 
 	xor(optb: Option<T>): OptionEquipped<T> {
-		if (this._opt == null && optb != null) {
+		if (this._opt == None && optb != null) {
 			return new OptionEquipped(optb);
-		} else if (this._opt != null && optb == null) {
+		} else if (this._opt != null && optb == None) {
 			return this;
 		} else {
 			return new OptionEquipped<T>(None);
@@ -208,7 +208,7 @@ export class OptionEquipped<T> {
 	}
 
 	zip<U>(optb: Option<U>): OptionEquipped<[T, U]> {
-		if (this._opt == null || optb == null) {
+		if (this._opt == None || optb == None) {
 			return new OptionEquipped<[T, U]>(None);
 		} else {
 			return new OptionEquipped([this._opt, optb]);
@@ -216,7 +216,7 @@ export class OptionEquipped<T> {
 	}
 
 	zipWith<U, R>(optb: Option<U>, f: (a: T, b: U) => R): OptionEquipped<R> {
-		if (this._opt == null || optb == null) {
+		if (this._opt == None || optb == None) {
 			return new OptionEquipped<R>(None);
 		} else {
 			return new OptionEquipped(f(this._opt, optb));
