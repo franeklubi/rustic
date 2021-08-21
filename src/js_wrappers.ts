@@ -1,4 +1,6 @@
+import { RawJson } from './types';
 import { Result } from './result/types';
+
 import { Ok, Err } from './result/helpers';
 
 
@@ -16,6 +18,6 @@ export function catchResult<T>(f: () => T): Result<T, string> {
 /**
  * Parses json, returning Result<T, string>.
  */
-export function parseJson<T>(json: string): Result<T, string> {
+export function parseJson<T>(json: RawJson<T>): Result<T, string> {
 	return catchResult(() => JSON.parse(json));
 }
