@@ -161,20 +161,20 @@ export class OptionEquipped<T> {
 		return new OptionEquipped(oldValue);
 	}
 
-	transpose<E>(): ResultEquipped<OptionEquipped<T>, E> {
+	transpose<E>(): ResultEquipped<Option<T>, E> {
 		const value = this._opt as Option<Result<T, E> | ResultEquipped<T, E>>;
 
 		if (value == null) {
-			return new ResultEquipped<OptionEquipped<T>, E>(
-				Ok(new OptionEquipped<T>(None)),
+			return new ResultEquipped<Option<T>, E>(
+				Ok(value),
 			);
 		} else {
 			if (value.__kind === ResultKind.Ok) {
-				return new ResultEquipped<OptionEquipped<T>, E>(
-					Ok(new OptionEquipped<T>(value.data as T)),
+				return new ResultEquipped<Option<T>, E>(
+					Ok(value.data as T),
 				);
 			} else {
-				return new ResultEquipped<OptionEquipped<T>, E>(
+				return new ResultEquipped<Option<T>, E>(
 					Err(value.data as E),
 				);
 			}
