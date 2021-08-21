@@ -190,19 +190,17 @@ export class ResultEquipped<T, E> {
 		}
 	}
 
-	transpose<I extends Inner<T>>(): OptionEquipped<ResultEquipped<I, E>> {
+	transpose<I extends Inner<T>>(): OptionEquipped<Result<I, E>> {
 		if (this._res.__kind === ResultKind.Ok) {
 			if (this._res.data == null) {
-				return new OptionEquipped<ResultEquipped<I, E>>(None);
+				return new OptionEquipped<Result<I, E>>(None);
 			} else {
-				return new OptionEquipped<ResultEquipped<I, E>>(
-					new ResultEquipped(Ok(this._res.data as I)),
+				return new OptionEquipped<Result<I, E>>(
+					Ok(this._res.data as I),
 				);
 			}
 		} else {
-			return new OptionEquipped(
-				new ResultEquipped<I, E>(Err(this._res.data)),
-			);
+			return new OptionEquipped(Err(this._res.data));
 		}
 	}
 

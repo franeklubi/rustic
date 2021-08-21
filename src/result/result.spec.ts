@@ -241,26 +241,26 @@ describe('result type', () => {
 
 		// Ok ResultEquipped of Some Option
 		const x1: ResultEquipped<Option<number>, SomeErr> = equip(Ok(5));
-		const y1: OptionEquipped<ResultEquipped<number, SomeErr>>
-			= new OptionEquipped(equip(Ok(5)));
+		const y1: OptionEquipped<Result<number, SomeErr>>
+			= new OptionEquipped(Ok(5));
 		expect(x1.transpose()).toEqual(y1);
 
 		// Ok ResultEquipped of None Option
 		const x2: ResultEquipped<Option<number>, SomeErr> = equip(Ok(None));
-		const y2: OptionEquipped<ResultEquipped<number, SomeErr>>
-			= new OptionEquipped<ResultEquipped<number, SomeErr>>(None);
+		const y2: OptionEquipped<Result<number, SomeErr>>
+			= new OptionEquipped<Result<number, SomeErr>>(None);
 		expect(x2.transpose()).toEqual(y2);
 
 		// Err ResultEquipped
 		const x3: ResultEquipped<Option<number>, SomeErr> = equip(Err(1234));
-		const y3: OptionEquipped<ResultEquipped<number, SomeErr>>
-			= new OptionEquipped(equip(Err(1234)));
+		const y3: OptionEquipped<Result<number, SomeErr>>
+			= new OptionEquipped(Err(1234));
 		expect(x3.transpose()).toEqual(y3);
 
 		// Err Result
 		const x4: Result<Option<number>, SomeErr> = Err(1234);
-		const y4: OptionEquipped<ResultEquipped<number, SomeErr>>
-			= new OptionEquipped(equip(Err(1234)));
+		const y4: OptionEquipped<Result<number, SomeErr>>
+			= new OptionEquipped(Err(1234));
 		expect(equip(x4).transpose()).toEqual(y4);
 	});
 
