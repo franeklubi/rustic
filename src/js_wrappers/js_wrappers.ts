@@ -1,7 +1,7 @@
 import { RawJson } from './types';
-import { Result } from './result/types';
+import { Result } from '../result/types';
 
-import { Ok, Err } from './result/helpers';
+import { Ok, Err } from '../result/helpers';
 
 
 /**

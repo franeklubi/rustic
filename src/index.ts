@@ -13,4 +13,5 @@ export * from './option/consts';
 export * from './option/equipped';
 
 // Wrappers for common js functions
-export * from './js_wrappers';
+export * from './js_wrappers/types';
+export * from './js_wrappers/js_wrappers';

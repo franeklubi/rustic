@@ -1,7 +1,7 @@
 import { RawJson } from './types';
-import { Result, ResultKind } from './result/types';
+import { Result, ResultKind } from '../result/types';
 
-import { Ok, Err } from './result/helpers';
+import { Ok, Err } from '../result/helpers';
 import { parseJson, catchResult } from './js_wrappers';
 
 
