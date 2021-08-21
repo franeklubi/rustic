@@ -7,6 +7,9 @@ import { safeFetch } from './fetch';
 import { parseJson } from './parse_json';
 import { catchResult, catchAsyncResult } from './helpers';
 
+import { enableFetchMocks } from 'jest-fetch-mock';
+enableFetchMocks();
+
 
 describe('js wrappers > helpers', () => {
 	test('catchResult', () => {
@@ -60,8 +63,30 @@ describe('js wrappers > parse_json', () => {
 
 describe('js wrappers > fetch', () => {
 	it('should return an error on invalid url call', async () => {
+		// Using jest-fetch-mock
+		(fetch as any).mockAbortOnce()
+
 		const fetched: Result<SafeResponse, string> = await safeFetch('asdf');
 
-		expect(fetched).toEqual(Err('chuj'));
+		expect(fetched)
+			.toEqual(Err('ReferenceError: DOMException is not defined'));
+	});
+
+	it('should return valid json', async () => {
+		// Using jest-fetch-mock
+		(fetch as any).mockResponseOnce(JSON.stringify({ data: '2137' }));
+
+		const fetched: Result<SafeResponse, string> = await safeFetch('asdf');
+
+		expect(fetched.__kind).toEqual(ResultKind.Ok);
+
+		const json: Result<{ data: string }, string>
+			= await (fetched.data as SafeResponse).json();
+
+		console.log({json});
+		// const fetched: Result<SafeResponse, string> = await safeFetch('asdf');
+		//
+		// expect(fetched)
+		// 	.toEqual(Err('ReferenceError: DOMException is not defined'));
 	});
 });

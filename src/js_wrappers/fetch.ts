@@ -29,12 +29,12 @@ export async function safeFetch(
 			clone: res.clone,
 
 			// Safetied
-			trailer: catchAsyncResult(() => res.trailer),
-			arrayBuffer: () => catchAsyncResult(res.arrayBuffer),
-			blob: () => catchAsyncResult(res.blob),
-			formData: () => catchAsyncResult(res.formData),
-			json: () => catchAsyncResult(res.json),
-			text: () => catchAsyncResult(res.text),
-		};
+			trailer: res.trailer,
+			arrayBuffer: res.arrayBuffer,
+			blob: res.blob,
+			formData: res.formData,
+			json: res.json,
+			text: res.text,
+		} as any as SafeResponse;
 	}).inner;
 }
