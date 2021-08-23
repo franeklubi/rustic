@@ -89,7 +89,7 @@ export class OptionEquipped<T> {
 		return this._opt != null;
 	}
 
-	map<U>(f: (a: T) => Option<U>): OptionEquipped<U> {
+	map<U>(f: (a: T) => U): OptionEquipped<U> {
 		if (this._opt == null) {
 			return this as unknown as OptionEquipped<U>;
 		} else {
@@ -97,19 +97,19 @@ export class OptionEquipped<T> {
 		}
 	}
 
-	mapOr<U>(d: U, f: (a: T) => Option<U>): OptionEquipped<U> {
+	mapOr<U>(d: U, f: (a: T) => U): U {
 		if (this._opt == null) {
-			return new OptionEquipped(d);
+			return d;
 		} else {
-			return new OptionEquipped(f(this._opt));
+			return f(this._opt);
 		}
 	}
 
-	mapOrElse<U>(df: () => U, mf: (a: T) => Option<U>): OptionEquipped<U> {
+	mapOrElse<U>(df: () => U, mf: (a: T) => U): U {
 		if (this._opt == null) {
-			return new OptionEquipped(df());
+			return df();
 		} else {
-			return new OptionEquipped(mf(this._opt));
+			return mf(this._opt);
 		}
 	}
 

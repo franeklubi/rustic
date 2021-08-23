@@ -144,20 +144,20 @@ describe('Option<T>', () => {
 
 	test('mapOr method', () => {
 		const x1: OptionEquipped<string> = equip("foo");
-		expect(x1.mapOr(42, (v) => v.length).inner).toEqual(3);
+		expect(x1.mapOr(42, (v) => v.length)).toEqual(3);
 
 		const x2: OptionEquipped<string> = equip(None as Option<string>);
-		expect(x2.mapOr(42, (v) => v.length).inner).toEqual(42);
+		expect(x2.mapOr(42, (v) => v.length)).toEqual(42);
 	});
 
 	test('mapOrElse method', () => {
 		const k = 21;
 
 		const x1: OptionEquipped<string> = equip("foo");
-		expect(x1.mapOrElse(() => 2 * k, (v) => v.length).inner).toEqual(3);
+		expect(x1.mapOrElse(() => 2 * k, (v) => v.length)).toEqual(3);
 
 		const x2: OptionEquipped<string> = equip(None as Option<string>);
-		expect(x2.mapOrElse(() => 2 * k, (v) => v.length).inner).toEqual(42);
+		expect(x2.mapOrElse(() => 2 * k, (v) => v.length)).toEqual(42);
 	});
 
 	test('okOr method', () => {
